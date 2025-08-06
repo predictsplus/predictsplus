@@ -7,3 +7,4 @@ declare module '*.pdf';
 declare module '*.docx';
 declare module '*.xlsx';
 declare module '*.wav';
+declare module '*.mp3';
