@@ -22,7 +22,7 @@ const Withdraw = ({ onClose }: { onClose: () => void }) => {
     };
 
     const handleWithdraw = () => {
-        showNotification("Success", `Withdrawn ₹${amount} successfully!`, "success")
+        showNotification("Success", `Withdrawn ₹${amount} successfully!`, "success", 3000)
         onClose();
     };
 
