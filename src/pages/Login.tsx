@@ -6,20 +6,34 @@ import { useAuth } from "../contexts/AuthContext.tsx";
 import Loader from "../components/Loader.tsx";
 import { useState } from "react";
 import { CNAME } from "../utils/constants.ts";
+import { useNotification } from "../contexts/NotificationContext.tsx";
+import { core_services } from "../utils/api.ts";
 
 const Login = () => {
   const navigate = useNavigate()
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    if (!email || !password) {
+      showNotification("Error", `Please Provide Correct Email and Password`, "error", 3000)
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      login();
+    try {
+      const res = await core_services.loginUser({ email, password });
+      login(res);
       navigate("/");
-    }, 1000);
+    } catch (err: any) {
+      showNotification("Error", `Login failed`, "error", 3000)
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="min-h-screen bg-bg1 text-gray-200 flex flex-col items-center justify-center relative">
       {loading && (
@@ -33,14 +47,18 @@ const Login = () => {
         <Input
           size="large"
           prefix={<MailOutlined />}
-          placeholder="Enter your username"
+          placeholder="Enter your email"
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input.Password
           size="large"
           prefix={<LockOutlined />}
           placeholder="Enter your password"
           className="mb-6 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <div className="flex justify-center mb-1 text-sm text-gray-400 hover:underline cursor-pointer">
           Need help?
