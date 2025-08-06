@@ -32,7 +32,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
             {notification && (
                 <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999]">
                     <div
-                        className={`relative px-5 py-3 rounded-full shadow-lg text-white min-w-[200px] max-w-sm text-left transition-all duration-300
+                        className={`relative px-5 py-2 rounded-full shadow-lg text-white w-[90vw] max-w-sm text-left transition-all duration-300
               ${isVisible ? "animate-bounceIn" : "animate-bounceOut"}
               bg-bg1 border
               ${notification.type === "success" && "border-green-400 "}
@@ -41,7 +41,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactNode }
             `}
                     >
                         <div className="font-semibold text-md">{notification.title}</div>
-                        <div className="text-sm text-white/90 mt-1">{notification.description}</div>
+                        <div className="text-sm text-white/90">{notification.description}</div>
                     </div>
                 </div>
             )}
