@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Button, Modal, Input, Card } from "antd";
+import { Button} from "antd";
 import FooterNav from "../components/FooterNav.tsx";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import Withdraw from "../components/Withdraw.tsx";
+import Deposit from "../components/Deposit.tsx";
 
 const Profile = () => {
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
@@ -32,7 +34,6 @@ const Profile = () => {
           />
         </div>
 
-        {/* Stats Boxes */}
         <div className="grid grid-cols-3 gap-3 text-center mt-6">
           <div className="bg-bg3 rounded-lg py-2">
             <p className="text-xs text-gray-400">Age</p>
@@ -48,13 +49,10 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Balance */}
         <div className="mt-6">
           <p className="text-sm text-gray-400">Current Balance</p>
           <p className="text-2xl font-semibold text-white">₹ 1,250</p>
         </div>
-
-        {/* Action Buttons */}
         <div className="flex justify-between flex-wrap gap-3 mt-6">
           <Button
             className="bg-bg3 border-none text-white flex-1 flex items-center justify-center gap-1"
@@ -70,38 +68,16 @@ const Profile = () => {
           </Button>
         </div>
 
-        {/* Contact */}
         <div className="text-center text-sm text-blue-400 mt-4 underline cursor-pointer">
           Contact Customer Care
         </div>
       </div>
 
-      {/* Modals */}
-      <Modal
-        title="Withdraw Funds"
-        open={isWithdrawOpen}
-        onCancel={() => setIsWithdrawOpen(false)}
-        onOk={() => setIsWithdrawOpen(false)}
-        okText="Withdraw"
-      >
-        <p>Enter amount to withdraw:</p>
-        <Input placeholder="e.g., ₹500" className="mt-2" />
-      </Modal>
-
-      <Modal
-        title="Deposit Funds"
-        open={isDepositOpen}
-        onCancel={() => setIsDepositOpen(false)}
-        onOk={() => setIsDepositOpen(false)}
-        okText="Deposit"
-      >
-        <p>Enter amount to deposit:</p>
-        <Input placeholder="e.g., ₹1000" className="mt-2" />
-      </Modal>
-      {/* History */}
+      {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} />}
+      {isDepositOpen && <Deposit onClose={() => setIsDepositOpen(false)} />}
+        
       <div className="w-full mt-8 text-center">
         <div className="bg-white/5 backdrop-blur-md p-4 rounded-xl w-full mx-auto">
-          {/* Tab Buttons */}
           <div className="flex justify-center gap-4 mb-4">
             <button
               onClick={() => setHistoryTab(1)}
@@ -119,7 +95,6 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* Table Format */}
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">
               <thead>
