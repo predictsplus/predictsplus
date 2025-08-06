@@ -1,6 +1,7 @@
 import { Button, Input } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNotification } from "../contexts/NotificationContext.tsx";
 
 const backdropVariants = {
   visible: { opacity: 1 },
@@ -14,14 +15,14 @@ const modalVariants = {
 
 const Deposit = ({ onClose }: { onClose: () => void }) => {
   const [amount, setAmount] = useState(1000);
-
+const { showNotification } = useNotification();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     setAmount(value >= 0 ? value : 0);
   };
 
   const handleDeposit = () => {
-    alert(`Deposited ₹${amount}`);
+    showNotification("Success", `Deposited ₹${amount} successfully!`, "success")
     onClose();
   };
 
