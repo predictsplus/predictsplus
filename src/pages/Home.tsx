@@ -1,5 +1,3 @@
-import { Button } from "antd";
-import Card from "antd/es/card/Card";
 import { useState } from "react";
 import FooterNav from "../components/FooterNav.tsx";
 import SpaceConsolidation from '../components/SpaceAdjust.tsx'
@@ -8,6 +6,8 @@ import { AnimatePresence } from "framer-motion";
 import rolling from '../assets/images/rolling.png'
 import coin from '../assets/images/coin.jpeg'
 import { useNavigate } from "react-router-dom";
+import LiveMatchCard from "../components/LiveMatchCard.tsx";
+import UpcomingMatchesCard from "../components/UpcomingMatchsCard.tsx";
 
 const liveMatches = [
   { id: 1, teamA: "India", teamB: "Australia", score: "132/2 (15.3)", status: "Live" },
@@ -37,30 +37,7 @@ const Home = () => {
         <h2 className="text-xl md:text-2xl font-semibold mb-2">🏏 Live Matches</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {liveMatches.map((match) => (
-            <Card
-              key={match.id}
-              className="bg-white/10 backdrop-blur-md border border-white/20 shadow-md text-white rounded-xl cursor-pointer"
-              onClick={() => setSelectedMatch(match)}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <div className="font-bold text-lg">{match.teamA} vs {match.teamB}</div>
-                  <div className="text-sm text-gray-400">{match.score}</div>
-                  <span className={`text-xs ${match?.status === 'Live' ? 'text-green-400' : 'text-orange-500'}`}>{match?.status}</span>
-                </div>
-                <Button
-                  type="primary"
-                  className="bg-pBlue rounded-full"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedMatch(match);
-                    setShowBetPopup(true);
-                  }}
-                >
-                  Place Bet
-                </Button>
-              </div>
-            </Card>
+            <LiveMatchCard match={match} setSelectedMatch={setSelectedMatch} setShowBetPopup={setShowBetPopup} />
           ))}
         </div>
       </section>
@@ -69,17 +46,7 @@ const Home = () => {
         <h2 className="text-xl md:text-2xl font-semibold mb-2">📅 Upcoming Matches</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {upcomingMatches.map((match) => (
-            <Card key={match.id} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-md text-white rounded-xl">
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <div className="font-bold text-lg">{match.teamA} vs {match.teamB}</div>
-                  <div className="text-sm text-gray-400">{match.time}</div>
-                </div>
-                <Button type="default" className="rounded-full bg-pBlue border-none text-white">
-                  Set Reminder
-                </Button>
-              </div>
-            </Card>
+            <UpcomingMatchesCard match={match} />
           ))}
         </div>
       </section>
