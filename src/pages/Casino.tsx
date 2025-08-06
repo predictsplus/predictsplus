@@ -63,7 +63,7 @@ const Casino = () => {
         transition={{ duration: 3, ease: "easeInOut" }}
         className="w-64 h-64 rounded-full border-8 border-pBlue border-dashed mx-auto flex items-center justify-center mb-6"
       >
-        <span className="text-lg font-semibold">🎡</span>
+        <span className="ringwheel">🎡</span>
       </motion.div>
 
       <Button

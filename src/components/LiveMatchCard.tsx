@@ -9,13 +9,13 @@ const LiveMatchCard = ({ match, setSelectedMatch, setShowBetPopup }) => {
         >
             <div className="flex justify-between items-center mb-2">
                 <div>
-                    <div className="font-bold text-lg">{match.teamA} vs {match.teamB}</div>
+                    <div className="font-bold team-names">{match.teamA} vs {match.teamB}</div>
                     <div className="text-sm text-gray-400">{match.score}</div>
                     <span className={`text-xs ${match?.status === 'Live' ? 'text-green-400' : 'text-orange-500'}`}>{match?.status}</span>
                 </div>
                 <Button
                     type="primary"
-                    className="bg-pBlue rounded-full"
+                    className="bg-pBlue rounded-full place-bet-btn"
                     onClick={(e) => {
                         e.stopPropagation();
                         setSelectedMatch(match);

@@ -35,7 +35,7 @@ const Home = () => {
     <div className="text-white mx-auto bg-bg1 animate-fade">
       <section className="pt-4 m-4">
         <h2 className="text-xl md:text-2xl font-semibold mb-2">🏏 Live Matches</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-4 live-card-col">
           {liveMatches.map((match) => (
             <LiveMatchCard match={match} setSelectedMatch={setSelectedMatch} setShowBetPopup={setShowBetPopup} />
           ))}
@@ -44,7 +44,7 @@ const Home = () => {
 
       <section className="mt-6 m-4">
         <h2 className="text-xl md:text-2xl font-semibold mb-2">📅 Upcoming Matches</h2>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-4 upcoming-card-col">
           {upcomingMatches.map((match) => (
             <UpcomingMatchesCard match={match} />
           ))}

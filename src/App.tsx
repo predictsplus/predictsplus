@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar.tsx";
 import Casino from "./pages/Casino.tsx";
 import Register from "./pages/Register.tsx";
 import { NotificationProvider } from "./contexts/NotificationContext.tsx";
+import '../src/utils/css/custom.css'
 
 const App = () => {
   return (

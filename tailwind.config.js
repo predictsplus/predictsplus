@@ -10,7 +10,7 @@ module.exports = {
         bg1: "#030712",
         bg2: "#1D202A",
         bg3: "#282c34",
-        pBlue: "#2196F3"
+        pBlue: "#1475e1"
       },
       animation: {
         fade: 'fadeIn .3s ease-in-out',

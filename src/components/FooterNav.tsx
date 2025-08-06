@@ -13,7 +13,7 @@ const FooterNav = () => {
         className={`flex flex-col items-center justify-center gap-1 text-xl cursor-pointer ${location.pathname === "/" ? "text-pBlue" : ""}`}
       >
         <IoMdHome />
-        <p className="text-xs">Home</p>
+        <p className="text-xs font-bold">Home</p>
       </span>
 
       <span
@@ -21,7 +21,7 @@ const FooterNav = () => {
         className={`flex flex-col items-center justify-center gap-1 text-xl cursor-pointer ${location.pathname === "/live" ? "text-pBlue" : ""}`}
       >
         <FaSuitcase />
-        <p className="text-xs">My Bets</p>
+        <p className="text-xs font-bold">My Bets</p>
       </span>
 
       <span
@@ -29,7 +29,7 @@ const FooterNav = () => {
         className={`flex flex-col items-center justify-center gap-1 text-xl cursor-pointer ${location.pathname === "/casino" ? "text-pBlue" : ""}`}
       >
         <FaDice />
-        <p className="text-xs">Casino</p>
+        <p className="text-xs font-bold">Casino</p>
       </span>
 
       <span
@@ -37,7 +37,7 @@ const FooterNav = () => {
         className={`flex flex-col items-center justify-center gap-1 text-xl cursor-pointer ${location.pathname === "/profile" ? "text-pBlue" : ""}`}
       >
         <FaUser />
-        <p className="text-xs">Profile</p>
+        <p className="text-xs font-bold">Profile</p>
       </span>
     </footer>
   );
