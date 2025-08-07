@@ -10,17 +10,52 @@ import logo from "../assets/logo/logo.png";
 import { useState } from "react";
 import Loader from "../components/Loader.tsx";
 import { CNAME } from "../utils/constants.ts";
+import { core_services } from "../utils/api.ts";
+import { useNotification } from "../contexts/NotificationContext.tsx";
 
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  
+  const handleRegister = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      showNotification("Error", "Please fill all required fields.", "error", 3000);
+      return;
+    }
 
-  const handleRegister = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      showNotification("Error", "Please enter a valid email address (e.g., aaa@xyz.com).", "error", 3000);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showNotification("Error", "Passwords do not match.", "error", 3000);
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await core_services.registerUser({
+        name,
+        age: 18,
+        email,
+        password,
+      });
+
+      showNotification("Success", "Account created successfully!", "success", 3000);
       navigate("/login");
-    }, 1000);
+    } catch (error: any) {
+      showNotification("Error", error.message || "Registration failed", "error", 3000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,24 +70,24 @@ const Register = () => {
       <h1 className="text-3xl font-bold mb-3">{CNAME}</h1>
 
       <div className="w-full max-w-xs text-left">
-        <label className="text-sm ml-2 mb-1 inline-block">
-          Full Name <span className="text-red-500">*</span>
-        </label>
+        <label className="text-sm ml-2 mb-1 inline-block">Full Name <span className="text-red-500">*</span></label>
         <Input
           size="large"
           prefix={<UserOutlined />}
           placeholder="Full Name"
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
 
-        <label className="text-sm ml-2 mb-1 inline-block">
-          Email <span className="text-red-500">*</span>
-        </label>
+        <label className="text-sm ml-2 mb-1 inline-block">Email <span className="text-red-500">*</span></label>
         <Input
           size="large"
           prefix={<MailOutlined />}
           placeholder="Email"
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <label className="text-sm ml-2 mb-1 inline-block">Mobile Number</label>
@@ -63,26 +98,28 @@ const Register = () => {
           type="tel"
           maxLength={10}
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
         />
 
-        <label className="text-sm ml-2 mb-1 inline-block">
-          Password <span className="text-red-500">*</span>
-        </label>
+        <label className="text-sm ml-2 mb-1 inline-block">Password <span className="text-red-500">*</span></label>
         <Input.Password
           size="large"
           prefix={<LockOutlined />}
           placeholder="Create a password"
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
-        <label className="text-sm ml-2 mb-1 inline-block">
-          Confirm Password <span className="text-red-500">*</span>
-        </label>
+        <label className="text-sm ml-2 mb-1 inline-block">Confirm Password <span className="text-red-500">*</span></label>
         <Input.Password
           size="large"
           prefix={<LockOutlined />}
           placeholder="Confirm password"
           className="mb-6 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
         <Button
@@ -105,8 +142,7 @@ const Register = () => {
         </div>
 
         <p className="text-xs text-gray-500 text-center mt-8">
-          © {CNAME} {new Date().getFullYear()} &nbsp;|&nbsp; Play responsibly.
-          Subject to risk.
+          © {CNAME} {new Date().getFullYear()} &nbsp;|&nbsp; Play responsibly. Subject to risk.
         </p>
       </div>
     </div>
