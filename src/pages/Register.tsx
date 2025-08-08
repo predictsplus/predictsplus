@@ -6,7 +6,7 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo/logo.png";
+import logo from "../assets/gifs/predictplus.gif";
 import { useState } from "react";
 import Loader from "../components/Loader.tsx";
 import { CNAME } from "../utils/constants.ts";
@@ -17,14 +17,16 @@ const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [age, setAge] = useState(""); // ✅ New state
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+
   const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !age || !password || !confirmPassword) {
       showNotification("Error", "Please fill all required fields.", "error", 3000);
       return;
     }
@@ -32,6 +34,12 @@ const Register = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       showNotification("Error", "Please enter a valid email address (e.g., aaa@xyz.com).", "error", 3000);
+      return;
+    }
+
+    const parsedAge = parseInt(age);
+    if (isNaN(parsedAge) || parsedAge < 14 || parsedAge > 75) {
+      showNotification("Error", "Age must be between 14 and 75.", "error", 3000);
       return;
     }
 
@@ -44,7 +52,7 @@ const Register = () => {
     try {
       await core_services.registerUser({
         name,
-        age: 18,
+        age: parsedAge, // ✅ Send parsed age
         email,
         password,
       });
@@ -65,10 +73,7 @@ const Register = () => {
           <Loader />
         </div>
       )}
-
-      <img src={logo} alt="logo" className="h-10 mb-2 rounded-full" />
-      <h1 className="text-3xl font-bold mb-3">{CNAME}</h1>
-
+      <img src={logo} alt="logo" className="h-10 mb-5" />
       <div className="w-full max-w-xs text-left">
         <label className="text-sm ml-2 mb-1 inline-block">Full Name <span className="text-red-500">*</span></label>
         <Input
@@ -88,6 +93,16 @@ const Register = () => {
           className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label className="text-sm ml-2 mb-1 inline-block">Age <span className="text-red-500">*</span></label>
+        <Input
+          size="large"
+          type="number"
+          placeholder="Age"
+          className="mb-4 rounded-full bg-bg2 text-gray-600 border-gray-700"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
         />
 
         <label className="text-sm ml-2 mb-1 inline-block">Mobile Number</label>
