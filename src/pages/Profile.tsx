@@ -7,6 +7,7 @@ import Deposit from "../components/Deposit.tsx";
 import { useUser } from "../contexts/UserContext.tsx";
 import { core_services } from "../utils/api.ts";
 import Loader from "../components/Loader.tsx";
+import logo from "../assets/logo/logo.png"
 
 const Profile = () => {
   const { user } = useUser()
@@ -119,7 +120,7 @@ const Profile = () => {
 
             <div className="mt-6">
               <p className="text-sm text-gray-400">Current Balance</p>
-              <p className="text-2xl font-semibold text-white">₹ {user?.balance}</p>
+              <p className="text-2xl font-semibold text-white flex flex-wrap"><img src={logo} alt="pp" className="h-8 mr-1"/> {user?.balance}</p>
             </div>
             <div className="flex justify-between flex-wrap gap-3 mt-6">
               <Button
