@@ -19,8 +19,8 @@ const Navbar = () => {
     <Layout.Header className="flex  justify-between items-center bg-bg1 text-white px-2 shadow-gray-800 shadow-sm animate-fade">
       <div className="flex flex-grow text-xl font-bold cursor-pointer gap-2">
         <img alt='logo' src={logo} className="h-8 ml-4 my-auto" />
-        <p className="bg-bg2 border-none text-white text-xs my-auto p-2 rounded-lg">
-          ₹ {user?.balance}
+        <p className="bg-bg2 border-none text-white text-xs my-auto p-2 rounded-lg flex">
+          {user?.balance}<p className='bg-green-500 text-bg1 rounded-full px-1 ml-1'>P Points</p>
         </p>
       </div>
       {isAuthenticated && (

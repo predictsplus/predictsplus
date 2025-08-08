@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNotification } from "../contexts/NotificationContext.tsx";
 import { useUser } from "../contexts/UserContext.tsx";
 import { core_services } from "../utils/api.ts";
-
+import Loader from './Loader.tsx'
 const backdropVariants = {
     visible: { opacity: 1 },
     hidden: { opacity: 0 },
@@ -75,12 +75,10 @@ const Withdraw = ({ onClose, onWithdrawSuccess }: { onClose: () => void; onWithd
                     className="bg-white/10 text-white border-none mb-4 focus:!bg-white/10 hover:!bg-white/10"
                 />
                 <Button
-                    className="w-full bg-pBlue text-white py-2 rounded-xl border-none"
+                    className={`w-full ${loading ? 'bg-bg1' : 'bg-pBlue'} text-white py-2 rounded-xl border-none flex items-center justify-center`}
                     onClick={handleWithdraw}
-                    loading={loading}
-                    disabled={loading}
                 >
-                    Withdraw ₹{amount}
+                    {loading ? <Loader /> : <>Withdraw {amount}</>}
                 </Button>
             </motion.div>
         </motion.div>
