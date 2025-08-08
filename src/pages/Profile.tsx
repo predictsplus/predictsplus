@@ -105,7 +105,7 @@ const Profile = () => {
             <div className="grid grid-cols-3 gap-3 text-center mt-6">
               <div className="bg-bg3 rounded-lg py-2">
                 <p className="text-xs text-gray-400">Age</p>
-                <p className="text-lg font-bold">24</p>
+                <p className="text-lg font-bold">{user?.age}</p>
               </div>
               <div className="bg-bg3 rounded-lg py-2">
                 <p className="text-xs text-gray-400">Bets</p>
