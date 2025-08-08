@@ -2,6 +2,8 @@ import { Button, Input } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNotification } from "../contexts/NotificationContext.tsx";
+import { useUser } from "../contexts/UserContext.tsx";
+import { core_services } from "../utils/api.ts";
 
 const backdropVariants = {
     visible: { opacity: 1 },
@@ -13,17 +15,37 @@ const modalVariants = {
     visible: { y: 0 },
 };
 
-const Withdraw = ({ onClose }: { onClose: () => void }) => {
+const Withdraw = ({ onClose, onWithdrawSuccess }: { onClose: () => void; onWithdrawSuccess: () => void }) => {
     const [amount, setAmount] = useState(500);
+    const [loading, setLoading] = useState(false);
     const { showNotification } = useNotification();
+    const { refreshUserFromCurrentToken } = useUser();
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.target.value);
         setAmount(value >= 0 ? value : 0);
     };
 
-    const handleWithdraw = () => {
-        showNotification("Success", `Withdrawn ₹${amount} successfully!`, "success", 3000)
-        onClose();
+    const handleWithdraw = async () => {
+        if (amount <= 0) {
+            showNotification("Error", "Amount must be greater than 0", "error");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await core_services.withdrawAmount({ amount });
+            await refreshUserFromCurrentToken();
+            if (onWithdrawSuccess) {
+                onWithdrawSuccess();
+            }
+            showNotification("Success", `₹${amount} withdrawn successfully!`, "success");
+            onClose();
+        } catch (error: any) {
+            showNotification("Error", error.message || "Withdrawal failed", "error");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -49,11 +71,14 @@ const Withdraw = ({ onClose }: { onClose: () => void }) => {
                     value={amount}
                     onChange={handleInputChange}
                     type="number"
-                    className="bg-white/10 text-white border-none mb-4"
+                    disabled={loading}
+                    className="bg-white/10 text-white border-none mb-4 focus:!bg-white/10 hover:!bg-white/10"
                 />
                 <Button
                     className="w-full bg-pBlue text-white py-2 rounded-xl border-none"
                     onClick={handleWithdraw}
+                    loading={loading}
+                    disabled={loading}
                 >
                     Withdraw ₹{amount}
                 </Button>

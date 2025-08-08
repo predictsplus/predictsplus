@@ -2,6 +2,8 @@ import { Button, Input } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNotification } from "../contexts/NotificationContext.tsx";
+import { core_services } from "../utils/api.ts";
+import { useUser } from "../contexts/UserContext.tsx";
 
 const backdropVariants = {
   visible: { opacity: 1 },
@@ -13,17 +15,36 @@ const modalVariants = {
   visible: { y: 0 },
 };
 
-const Deposit = ({ onClose }: { onClose: () => void }) => {
+const Deposit = ({ onClose, onDepositSuccess }: { onClose: () => void, onDepositSuccess: () => void }) => {
   const [amount, setAmount] = useState(1000);
-const { showNotification } = useNotification();
+  const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const { refreshUserFromCurrentToken } = useUser();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     setAmount(value >= 0 ? value : 0);
   };
 
-  const handleDeposit = () => {
-    showNotification("Success", `Deposited ₹${amount} successfully!`, "success")
-    onClose();
+  const handleDeposit = async () => {
+    if (amount <= 0) {
+      showNotification("Error", "Amount must be greater than 0", "error");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await core_services.depositAmount({ amount });
+      await refreshUserFromCurrentToken()
+      if (onDepositSuccess) {
+        onDepositSuccess();
+      }
+      showNotification("Success", `₹${amount} deposited successfully!`, "success");
+      onClose();
+    } catch (error: any) {
+      showNotification("Error", error.message || "Deposit failed", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,15 +66,19 @@ const { showNotification } = useNotification();
           <button onClick={onClose} className="text-white hover:text-red-400">✕</button>
         </div>
         <p className="text-sm text-gray-400 mb-2">Enter amount to deposit:</p>
-        <Input
-          value={amount}
-          onChange={handleInputChange}
-          type="number"
-          className="bg-white/10 text-white border-none mb-4"
-        />
+    <Input
+  value={amount}
+  onChange={handleInputChange}
+  type="number"
+  disabled={loading}
+  className="bg-white/10 text-white border-none mb-4 focus:!bg-white/10 hover:!bg-white/10"
+/>
+
         <Button
           className="w-full bg-pBlue text-white py-2 rounded-xl border-none"
           onClick={handleDeposit}
+          loading={loading}
+          disabled={loading}
         >
           Deposit ₹{amount}
         </Button>

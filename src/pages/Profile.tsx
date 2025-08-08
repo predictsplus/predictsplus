@@ -28,44 +28,44 @@ const Profile = () => {
   const [withdrawHistory, setWithdrawHistory] = useState<
     { amount: number; date: string }[]
   >([]);
+  const fetchDeposits = async () => {
+    try {
+      const res = await core_services.getDepositList();
+      const formatted = res.map((entry: any) => ({
+        amount: entry.amount,
+        date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+      }));
+      setDepositHistory(formatted);
+    } catch (err) {
+      console.error("Failed to fetch deposit history", err);
+    } finally {
+      setIsDepositLoading(false);
+    }
+  };
+  const fetchWithdrawals = async () => { // ✅ NEW
+    try {
+      const res = await core_services.getWithdrawList();
+      const formatted = res.map((entry: any) => ({
+        amount: entry.amount,
+        date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+      }));
+      setWithdrawHistory(formatted);
+    } catch (err) {
+      console.error("Failed to fetch withdraw history", err);
+    } finally {
+      setIsWithdrawLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDeposits = async () => {
-      try {
-        const res = await core_services.getDepositList();
-        const formatted = res.map((entry: any) => ({
-          amount: entry.amount,
-          date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
-        }));
-        setDepositHistory(formatted);
-      } catch (err) {
-        console.error("Failed to fetch deposit history", err);
-      } finally {
-        setIsDepositLoading(false);
-      }
-    };
-    const fetchWithdrawals = async () => { // ✅ NEW
-      try {
-        const res = await core_services.getWithdrawList();
-        const formatted = res.map((entry: any) => ({
-          amount: entry.amount,
-          date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
-        }));
-        setWithdrawHistory(formatted);
-      } catch (err) {
-        console.error("Failed to fetch withdraw history", err);
-      } finally {
-        setIsWithdrawLoading(false);
-      }
-    };
 
     fetchDeposits();
     fetchWithdrawals();
@@ -141,8 +141,8 @@ const Profile = () => {
             </div>
           </div>
 
-          {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} />}
-          {isDepositOpen && <Deposit onClose={() => setIsDepositOpen(false)} />}
+          {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} onWithdrawSuccess={fetchWithdrawals}/>}
+          {isDepositOpen && <Deposit onClose={() => setIsDepositOpen(false)} onDepositSuccess={fetchDeposits} />}
 
           <div className="w-full mt-8 text-center">
             <div className="bg-white/5 backdrop-blur-md p-4 rounded-xl w-full mx-auto">

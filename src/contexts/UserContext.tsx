@@ -40,7 +40,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       clearUser();
     }
   };
-
+  const refreshUserFromCurrentToken = async () => {
+    const token = getToken();
+    if (token) {
+      await setUserFromToken(token);
+    }
+  };
   const clearUser = () => {
     setUser(null);
     removeToken();
@@ -49,12 +54,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(async () => {
     const token = await getToken()
     if (token && !user) {
-      setUserFromToken(token); 
+      setUserFromToken(token);
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUserFromToken, clearUser }}>
+    <UserContext.Provider value={{ user, setUserFromToken, clearUser, refreshUserFromCurrentToken }}>
       {children}
     </UserContext.Provider>
   );
