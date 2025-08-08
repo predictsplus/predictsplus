@@ -8,6 +8,7 @@ import { useState } from "react";
 import { CNAME } from "../utils/constants.ts";
 import { useNotification } from "../contexts/NotificationContext.tsx";
 import { core_services } from "../utils/api.ts";
+import { useUser } from "../contexts/UserContext.tsx";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -16,19 +17,22 @@ const Login = () => {
   const { showNotification } = useNotification();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUserFromToken } = useUser();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      showNotification("Error", `Please Provide Correct Email and Password`, "error", 3000)
+      showNotification("Error", `Please Provide Correct Email and Password`, "error", 3000);
+      return;
     }
 
     setLoading(true);
     try {
       const res = await core_services.loginUser({ email, password });
-      login(res);
+      login(res); 
+      setUserFromToken(res.token);
       navigate("/");
     } catch (err: any) {
-      showNotification("Error", `Login failed`, "error", 3000)
+      showNotification("Error", `Login failed`, "error", 3000);
     } finally {
       setLoading(false);
     }
