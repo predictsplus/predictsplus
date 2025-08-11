@@ -52,7 +52,7 @@ const BetPopup = ({ match, onClose }: { match: any; onClose: () => void }) => {
         const newBalance = balance - amount;
 
         alert(
-            `Bet placed on ${selected} for ₹${amount}. Potential win: ₹${winnings}`
+            `bid placed on ${selected} for ₹${amount}. Potential win: ₹${winnings}`
         );
 
         setBalance(newBalance);

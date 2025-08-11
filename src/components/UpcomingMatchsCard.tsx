@@ -1,7 +1,12 @@
 import { Button } from "antd";
 import Card from "antd/es/card/Card";
+import { useNotification } from "../contexts/NotificationContext.tsx";
+import { useState } from "react";
 
 const UpcomingMatchesCard = ({ match }) => {
+  const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+
   const formatDateTime = (gmtString) => {
     const date = new Date(gmtString);
     return date.toLocaleString("en-IN", {
@@ -9,6 +14,28 @@ const UpcomingMatchesCard = ({ match }) => {
       timeStyle: "short",
       timeZone: "Asia/Kolkata"
     });
+  };
+
+  const handleSetReminder = async () => {
+    try {
+      setLoading(true);
+      // Here you can later call an API to actually save the reminder
+      showNotification(
+        "Success",
+        `Reminder set for ${match.teamA} vs ${match.teamB} on ${formatDateTime(
+          match.dateTimeGMT
+        )}`,
+        "success"
+      );
+    } catch (error) {
+      showNotification(
+        "Error",
+        error?.message || "Failed to set reminder",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Card
@@ -28,6 +55,8 @@ const UpcomingMatchesCard = ({ match }) => {
         <Button
           type="default"
           className="rounded-full bg-pBlue border-none text-white set-reminder-btn"
+          onClick={handleSetReminder}
+          loading={loading}
         >
           Set Reminder
         </Button>

@@ -22,7 +22,7 @@ const LiveMatchCard = ({ match, setSelectedMatch, setShowBetPopup }) => {
                         setShowBetPopup(true);
                     }}
                 >
-                    Place Bet
+                    Place Order
                 </Button>
             </div>
         </Card>
