@@ -75,7 +75,7 @@ const BetPopup = ({ match, onClose }: { match: any; onClose: () => void }) => {
             >
                 <div className="flex justify-between items-center mb-4">
                     <div>
-                        <h2 className="text-xl font-semibold">Place Bet</h2>
+                        <h2 className="text-xl font-semibold">Place Order</h2>
                         <p className="text-sm text-gray-400">
                             {match.teamA} vs {match.teamB}
                         </p>
@@ -133,7 +133,7 @@ const BetPopup = ({ match, onClose }: { match: any; onClose: () => void }) => {
                     className="w-full mt-6 bg-pBlue text-white text-md py-2 rounded-xl border-none"
                     onClick={handlePlaceBet}
                 >
-                    Place Bet
+                    Place Order
                 </Button>}
             </motion.div>
         </motion.div>

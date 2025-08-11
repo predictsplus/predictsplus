@@ -1,61 +1,168 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FooterNav from "../components/FooterNav.tsx";
-import SpaceConsolidation from '../components/SpaceAdjust.tsx'
+import SpaceConsolidation from '../components/SpaceAdjust.tsx';
 import BetPopup from "../components/BetPopup.tsx";
 import { AnimatePresence } from "framer-motion";
-import rolling from '../assets/images/rolling.png'
-import coin from '../assets/images/coin.jpeg'
+import rolling from '../assets/images/rolling.png';
+import coin from '../assets/images/coin.jpeg';
 import { useNavigate } from "react-router-dom";
 import LiveMatchCard from "../components/LiveMatchCard.tsx";
 import UpcomingMatchesCard from "../components/UpcomingMatchsCard.tsx";
+import { core_services } from "../utils/api.ts";
+import Loader from "../components/Loader.tsx";
 
-const liveMatches = [
-  { id: 1, teamA: "India", teamB: "Australia", score: "132/2 (15.3)", status: "Live" },
-  { id: 2, teamA: "England", teamB: "Pakistan", score: "98/4 (13.0)", status: "Live" },
-  { id: 2, teamA: "New Zealand", teamB: "West Indies", score: "22/4 (12.0)", status: "Stopped Due to Rain" },
-];
-
-const upcomingMatches = [
-  { id: 3, teamA: "India", teamB: "South Africa", time: "Today, 7:00 PM" },
-  { id: 4, teamA: "Sri Lanka", teamB: "New Zealand", time: "Tomorrow, 3:30 PM" },
-];
 const casinoHighlights = [
   { id: 1, title: "Slot Rolling", image: rolling },
   { id: 2, title: "Flip Coin", image: coin },
 ];
 
 const Home = () => {
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [liveMatches, setLiveMatches] = useState<any[]>([]);
+  const [upcomingMatches, setUpcomingMatches] = useState<any[]>([]);
+  const [selectedMatch, setSelectedMatch] = useState<any>(null);
   const [showBetPopup, setShowBetPopup] = useState(false);
-  const navigate = useNavigate()
-  const navigateToCasino = () => {
-    navigate('/casino')
-  }
+  const [loading, setLoading] = useState(false);
+
+  const [showAllLive, setShowAllLive] = useState(false);
+  const [showAllUpcoming, setShowAllUpcoming] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
+  const navigateToCasino = () => navigate('/casino');
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      setLoading(true);
+      try {
+        const res = await core_services.getPredictPlusMatches();
+        const matches = (res.data || []).filter((m: any) => m.ms?.toLowerCase() !== "result");
+
+        const live = matches.filter((m: any) =>
+          m.status?.toLowerCase().includes("live") || m.t1s || m.t2s
+        );
+
+        const upcoming = matches.filter((m: any) =>
+          m.status?.toLowerCase().includes("match not started") ||
+          m.status?.toLowerCase().includes("fixture")
+        );
+
+        setLiveMatches(live);
+        setUpcomingMatches(upcoming);
+      } catch (err) {
+        console.error("Failed to fetch matches:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMatches();
+  }, []);
+
+  const filterMatches = (matches: any[]) => {
+    if (!searchQuery.trim()) return matches;
+    return matches.filter((m) =>
+      `${m.t1} ${m.t2} ${m.series}`.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const displayedLiveMatches = showAllLive
+    ? filterMatches(liveMatches)
+    : filterMatches(liveMatches).slice(0, 10);
+
+  const displayedUpcomingMatches = showAllUpcoming
+    ? filterMatches(upcomingMatches)
+    : filterMatches(upcomingMatches).slice(0, 10);
+
   return (
     <div className="text-white mx-auto bg-bg1 animate-fade">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <Loader />
+        </div>
+      )}
+
+      <div className="m-4">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-2 pl-5 rounded-full bg-white/10 text-sm text-white outline-none placeholder:pl-1"
+        />
+      </div>
       <section className="pt-4 m-4">
         <h2 className="text-xl md:text-2xl font-semibold mb-2">🏏 Live Matches</h2>
         <div className="grid gap-4 md:grid-cols-4 live-card-col">
-          {liveMatches.map((match) => (
-            <LiveMatchCard match={match} setSelectedMatch={setSelectedMatch} setShowBetPopup={setShowBetPopup} />
-          ))}
+          {displayedLiveMatches.length > 0 ? (
+            displayedLiveMatches.map((match) => (
+              <LiveMatchCard
+                key={match.id}
+                match={{
+                  id: match.id,
+                  teamA: match.t1,
+                  teamB: match.t2,
+                  score: `${match.t1s || ""} ${match.t2s ? " / " + match.t2s : ""}`,
+                  status: match.status,
+                  teamAImg: match.t1img,
+                  teamBImg: match.t2img,
+                  series: match.series,
+                  dateTimeGMT: match.dateTimeGMT
+                }}
+                setSelectedMatch={setSelectedMatch}
+                setShowBetPopup={setShowBetPopup}
+              />
+            ))
+          ) : (
+            <p className="text-gray-400">No live matches available</p>
+          )}
         </div>
+        {filterMatches(liveMatches).length > 10 && (
+          <button
+            onClick={() => setShowAllLive(!showAllLive)}
+            className="mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+          >
+            {showAllLive ? "Show Less" : "Show More"}
+          </button>
+        )}
       </section>
-
       <section className="mt-6 m-4">
         <h2 className="text-xl md:text-2xl font-semibold mb-2">📅 Upcoming Matches</h2>
         <div className="grid gap-4 md:grid-cols-4 upcoming-card-col">
-          {upcomingMatches.map((match) => (
-            <UpcomingMatchesCard match={match} />
-          ))}
+          {displayedUpcomingMatches.length > 0 ? (
+            displayedUpcomingMatches.map((match) => (
+              <UpcomingMatchesCard
+                key={match.id}
+                match={{
+                  id: match.id,
+                  teamA: match.t1,
+                  teamB: match.t2,
+                  dateTimeGMT: match.dateTimeGMT,
+                  series: match.series,
+                  teamAImg: match.t1img,
+                  teamBImg: match.t2img,
+                  status: match.status
+                }}
+              />
+            ))
+          ) : (
+            <p className="text-gray-400">No upcoming matches available</p>
+          )}
         </div>
+        {filterMatches(upcomingMatches).length > 10 && (
+          <button
+            onClick={() => setShowAllUpcoming(!showAllUpcoming)}
+            className="mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+          >
+            {showAllUpcoming ? "Show Less" : "Show More"}
+          </button>
+        )}
       </section>
-
       {selectedMatch && (
         <div className="mt-8 bg-[#111] p-4 rounded-lg">
           <h3 className="text-lg font-bold mb-2">Match Details</h3>
           <p>{selectedMatch.teamA} vs {selectedMatch.teamB}</p>
-          <p className="text-sm text-gray-400">Live Score: {selectedMatch.score}</p>
+          {selectedMatch.score && (
+            <p className="text-sm text-gray-400">Live Score: {selectedMatch.score}</p>
+          )}
         </div>
       )}
       <section className="mt-6 m-4">
@@ -73,6 +180,7 @@ const Home = () => {
           ))}
         </div>
       </section>
+
       <SpaceConsolidation />
       <FooterNav />
       <AnimatePresence>

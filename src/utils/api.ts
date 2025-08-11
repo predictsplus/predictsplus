@@ -212,5 +212,27 @@ export const core_services = {
       throw error.response?.data || error.message;
     }
   },
+  getPredictPlusMatches: async () => {
+    try {
+      const token = getToken();
 
+      if (!token) {
+        throw new Error("Token not found!");
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/games/getPredictPlusMatches`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  }
 };
