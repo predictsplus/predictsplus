@@ -66,11 +66,11 @@ const Home = () => {
 
   const displayedLiveMatches = showAllLive
     ? filterMatches(liveMatches)
-    : filterMatches(liveMatches).slice(0, 10);
+    : filterMatches(liveMatches).slice(0, 8);
 
   const displayedUpcomingMatches = showAllUpcoming
     ? filterMatches(upcomingMatches)
-    : filterMatches(upcomingMatches).slice(0, 10);
+    : filterMatches(upcomingMatches).slice(0, 8);
 
   return (
     <div className="text-white mx-auto bg-bg1 animate-fade">
@@ -118,7 +118,7 @@ const Home = () => {
         {filterMatches(liveMatches).length > 10 && (
           <button
             onClick={() => setShowAllLive(!showAllLive)}
-            className="mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+            className="mt-4 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20"
           >
             {showAllLive ? "Show Less" : "Show More"}
           </button>
@@ -150,7 +150,7 @@ const Home = () => {
         {filterMatches(upcomingMatches).length > 10 && (
           <button
             onClick={() => setShowAllUpcoming(!showAllUpcoming)}
-            className="mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+            className="mt-4 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20"
           >
             {showAllUpcoming ? "Show Less" : "Show More"}
           </button>
