@@ -76,7 +76,7 @@ const Withdraw = ({ onClose, onWithdrawSuccess }: { onClose: () => void; onWithd
                 />
                 {user?.conversion_ratio && user.conversion_ratio !== 0 && (
                     <p className="text-sm text-gray-400 mb-4">
-                        You will get <span className="font-semibold">₹{(ppoints / user.conversion_ratio).toFixed(2)}</span> while you withdraw {ppoints} Points
+                        You will get <span className="font-semibold text-green-500">₹{(ppoints / user.conversion_ratio).toFixed(2)}</span> while you withdraw <span className="text-points font-semibold">{ppoints} Points</span>
                     </p>
                 )}
                 <Button
