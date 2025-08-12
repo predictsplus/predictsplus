@@ -28,7 +28,7 @@ const BetPopup = ({ match, onClose }: { match: any; onClose: () => void }) => {
         });
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: any) => {
         const value = Number(e.target.value);
         if (value <= balance) {
             setAmount(value >= 0 ? value : 0);

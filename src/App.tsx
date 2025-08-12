@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "antd";
-import { AuthProvider } from "./contexts/AuthContext.tsx";
-import Home from "./pages/Home.tsx";
-import Login from "./pages/Login.tsx";
-import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import Profile from "./pages/Profile.tsx";
-import LiveBet from "./pages/LiveBet.tsx";
-import Navbar from "./components/Navbar.tsx";
-import Casino from "./pages/Casino.tsx";
-import Register from "./pages/Register.tsx";
-import { NotificationProvider } from "./contexts/NotificationContext.tsx";
+import { AuthProvider } from "./contexts/AuthContext";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./pages/Profile";
+import LiveBet from "./pages/LiveBet";
+import Navbar from "./components/Navbar";
+import Casino from "./pages/Casino";
+import Register from "./pages/Register";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import '../src/utils/css/custom.css'
-import { UserProvider } from "./contexts/UserContext.tsx";
+import { UserProvider } from "./contexts/UserContext";
 
 const App = () => {
   return (

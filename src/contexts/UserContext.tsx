@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, React } from "react";
 import { jwtDecode } from "jwt-decode";
-import { core_services } from "../utils/api.ts";
-import { getToken, removeToken, setToken } from "../utils/function.ts";
+import { core_services } from "../utils/api";
+import { getToken, removeToken, setToken } from "../utils/function";
 
 type UserType = {
   id: string;
@@ -25,7 +25,8 @@ const UserContext = createContext<UserContextType>({
 
 export const useUser = () => useContext(UserContext);
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+
+export const UserProvider: React.FC<ReactNode> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
 
   const setUserFromToken = async (token: string) => {

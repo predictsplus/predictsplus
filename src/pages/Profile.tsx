@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "antd";
-import FooterNav from "../components/FooterNav.tsx";
+import FooterNav from "../components/FooterNav";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import Withdraw from "../components/Withdraw.tsx";
-import Deposit from "../components/Deposit.tsx";
-import { useUser } from "../contexts/UserContext.tsx";
-import { core_services } from "../utils/api.ts";
-import Loader from "../components/Loader.tsx";
+import Withdraw from "../components/Withdraw";
+import Deposit from "../components/Deposit";
+import { useUser } from "../contexts/UserContext";
+import { core_services } from "../utils/api";
+import Loader from "../components/Loader";
 import logo from "../assets/logo/logo.png"
 
 const Profile = () => {
@@ -23,12 +23,8 @@ const Profile = () => {
   }, [user]);
 
 
-  const [depositHistory, setDepositHistory] = useState<
-    { amount: number; date: string }[]
-  >([]);
-  const [withdrawHistory, setWithdrawHistory] = useState<
-    { amount: number; date: string }[]
-  >([]);
+  const [depositHistory, setDepositHistory] = useState([]);
+  const [withdrawHistory, setWithdrawHistory] = useState([]);
   const fetchDeposits = async () => {
     try {
       const res = await core_services.getDepositList();
@@ -120,7 +116,7 @@ const Profile = () => {
 
             <div className="mt-6">
               <p className="text-sm text-gray-400">Current Balance</p>
-              <p className="text-2xl font-semibold text-white flex flex-wrap"><img src={logo} alt="pp" className="h-8 mr-1"/> {user?.balance}</p>
+              <p className="text-2xl font-semibold text-white flex flex-wrap"><img src={logo} alt="pp" className="h-8 mr-1" /> {user?.ppoints}</p>
             </div>
             <div className="flex justify-between flex-wrap gap-3 mt-6">
               <Button
@@ -142,7 +138,7 @@ const Profile = () => {
             </div>
           </div>
 
-          {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} onWithdrawSuccess={fetchWithdrawals}/>}
+          {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} onWithdrawSuccess={fetchWithdrawals} />}
           {isDepositOpen && <Deposit onClose={() => setIsDepositOpen(false)} onDepositSuccess={fetchDeposits} />}
 
           <div className="w-full mt-8 text-center">
@@ -184,7 +180,10 @@ const Profile = () => {
                     ) : (historyTab === 1 ? depositHistory : withdrawHistory).length > 0 ? (
                       (historyTab === 1 ? depositHistory : withdrawHistory).map((entry, index) => (
                         <tr key={index} className="border-b border-white/10">
-                          <td className="py-2 px-4 text-white">₹{entry?.amount.toFixed(2)}</td>
+                          <td className="py-2 px-4 text-white">
+                            {historyTab === 1 ? "+" : "-"} ₹{entry?.amount.toFixed(2)}{" "}
+                            <span className="text-[#FED348]">({entry?.ppoints?.toFixed(2)} PPoints)</span>
+                          </td>
                           <td className="py-2 px-4 text-gray-400">{entry?.date}</td>
                         </tr>
                       ))

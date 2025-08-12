@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import Card from "antd/es/card/Card";
-import { useNotification } from "../contexts/NotificationContext.tsx";
+import { useNotification } from "../contexts/NotificationContext";
 import { useState } from "react";
 
 const UpcomingMatchesCard = ({ match }) => {

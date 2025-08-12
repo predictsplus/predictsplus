@@ -2,13 +2,13 @@ import { Button, Input } from "antd";
 import { MailOutlined, LockOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/gifs/predictplus.gif';
-import { useAuth } from "../contexts/AuthContext.tsx";
-import Loader from "../components/Loader.tsx";
+import { useAuth } from "../contexts/AuthContext";
+import Loader from "../components/Loader";
 import { useState } from "react";
-import { CNAME } from "../utils/constants.ts";
-import { useNotification } from "../contexts/NotificationContext.tsx";
-import { core_services } from "../utils/api.ts";
-import { useUser } from "../contexts/UserContext.tsx";
+import { CNAME } from "../utils/constants";
+import { useNotification } from "../contexts/NotificationContext";
+import { core_services } from "../utils/api";
+import { useUser } from "../contexts/UserContext";
 
 const Login = () => {
   const navigate = useNavigate()

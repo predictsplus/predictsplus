@@ -8,10 +8,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/gifs/predictplus.gif";
 import { useState } from "react";
-import Loader from "../components/Loader.tsx";
-import { CNAME } from "../utils/constants.ts";
-import { core_services } from "../utils/api.ts";
-import { useNotification } from "../contexts/NotificationContext.tsx";
+import Loader from "../components/Loader";
+import { CNAME } from "../utils/constants";
+import { core_services } from "../utils/api";
+import { useNotification } from "../contexts/NotificationContext";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Register = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [age, setAge] = useState(""); // ✅ New state
+  const [age, setAge] = useState(""); 
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

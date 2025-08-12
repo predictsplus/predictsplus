@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getToken , removeToken, setToken} from '../utils/function.ts'
+import { getToken , removeToken, setToken} from '../utils/function'
 
 interface AuthContextType {
   isAuthenticated: boolean;

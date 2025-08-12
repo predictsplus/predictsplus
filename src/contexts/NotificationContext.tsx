@@ -1,4 +1,5 @@
 import React, {
+    ReactNode,
     createContext,
     useContext,
     useState,
@@ -25,7 +26,9 @@ const NotificationContext = createContext({
         duration: number
     ) => { },
 });
-
+interface NotificationProviderProps {
+  children: ReactNode;
+}
 export const useNotification = () => {
     const context = useContext(NotificationContext);
     if (!context)
@@ -33,11 +36,7 @@ export const useNotification = () => {
     return context;
 };
 
-export const NotificationProvider = ({
-    children,
-}: {
-    children: any;
-}) => {
+export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
     const audioRef: any = useRef<HTMLAudioElement | null>(null);
 

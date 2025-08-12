@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import FooterNav from "../components/FooterNav.tsx";
+import FooterNav from "../components/FooterNav";
 import { Button } from "antd";
 import { motion } from "framer-motion";
 import rollingSound from "../assets/sounds/rolling.mp3";

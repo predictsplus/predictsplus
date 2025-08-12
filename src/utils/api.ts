@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, setToken } from "./function.ts";
+import { getToken, setToken } from "./function";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5789"
 
@@ -188,7 +188,7 @@ export const core_services = {
       throw error.response?.data || error.message;
     }
   },
-  withdrawAmount: async ({ amount }: { amount: number }) => {
+  withdrawAmount: async ({ ppoints }: { ppoints: number }) => {
     try {
       const token = getToken();
 
@@ -198,7 +198,7 @@ export const core_services = {
 
       const response = await axios.post(
         `${API_BASE_URL}/users/transactions/withdraw`,
-        { amount },
+        { ppoints },
         {
           headers: {
             "Content-Type": "application/json",

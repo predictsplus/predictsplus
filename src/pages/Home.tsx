@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import FooterNav from "../components/FooterNav.tsx";
-import SpaceConsolidation from '../components/SpaceAdjust.tsx';
-import BetPopup from "../components/BetPopup.tsx";
+import FooterNav from "../components/FooterNav";
+import SpaceConsolidation from '../components/SpaceAdjust';
+import BetPopup from "../components/BetPopup";
 import { AnimatePresence } from "framer-motion";
 import rolling from '../assets/images/rolling.png';
 import coin from '../assets/images/coin.jpeg';
 import { useNavigate } from "react-router-dom";
-import LiveMatchCard from "../components/LiveMatchCard.tsx";
-import UpcomingMatchesCard from "../components/UpcomingMatchsCard.tsx";
-import { core_services } from "../utils/api.ts";
-import Loader from "../components/Loader.tsx";
+import LiveMatchCard from "../components/LiveMatchCard";
+import UpcomingMatchesCard from "../components/UpcomingMatchsCard";
+import { core_services } from "../utils/api";
+import Loader from "../components/Loader";
 
 const casinoHighlights = [
   { id: 1, title: "Slot Rolling", image: rolling },
@@ -95,7 +95,6 @@ const Home = () => {
           {displayedLiveMatches.length > 0 ? (
             displayedLiveMatches.map((match) => (
               <LiveMatchCard
-                key={match.id}
                 match={{
                   id: match.id,
                   teamA: match.t1,
@@ -130,7 +129,6 @@ const Home = () => {
           {displayedUpcomingMatches.length > 0 ? (
             displayedUpcomingMatches.map((match) => (
               <UpcomingMatchesCard
-                key={match.id}
                 match={{
                   id: match.id,
                   teamA: match.t1,
