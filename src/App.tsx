@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import '../src/utils/css/custom.css'
 import { UserProvider } from "./contexts/UserContext";
+import AdminPanel from "./pages/Adminpanel";
 
 const App = () => {
   return (
@@ -36,6 +37,9 @@ const App = () => {
                   <Route path="/profile" element={<ProtectedRoute><Navbar /><Profile /></ProtectedRoute>} />
                   <Route path="/casino" element={<ProtectedRoute><Navbar /><Casino /></ProtectedRoute>} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/admin " element={<AdminPanel />} />
+                  
+
                 </Routes>
               </Layout.Content>
             </Layout>
