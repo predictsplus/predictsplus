@@ -11,6 +11,7 @@ import Casino from "./pages/Casino.tsx";
 import Register from "./pages/Register.tsx";
 import { NotificationProvider } from "./contexts/NotificationContext.tsx";
 import '../src/utils/css/custom.css'
+import Adminpanel from "./pages/Adminpanel.tsx";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
                 <Route path="/profile" element={<ProtectedRoute><Navbar /><Profile /></ProtectedRoute>} />
                 <Route path="/casino" element={<ProtectedRoute><Navbar /><Casino /></ProtectedRoute>} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/admin" element={<Adminpanel />} />
               </Routes>
             </Layout.Content>
           </Layout>
