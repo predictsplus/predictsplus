@@ -1,15 +1,6 @@
 import axios from "axios";
+import { getToken, setToken } from "./function";
 
-const fetchWithAuth = async (url: string, options: any = {}) => {
-  const token = localStorage.getItem("token");
-
-  const headers = {
-    ...options.headers,
-    Authorization: token ? `Bearer ${token}` : "",
-  };
-
-  return fetch(url, { ...options, headers });
-};
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5789"
 
 export const core_services = {
@@ -36,7 +27,7 @@ export const core_services = {
       );
       const token = response.data.token;
       if (token) {
-        localStorage.setItem("token", token);
+        setToken(token)
       }
       return response.data;
     } catch (error: any) {
@@ -67,7 +58,7 @@ export const core_services = {
         {
           headers: {
             "Content-Type": "application/json",
-            "X-API-Key": "", 
+            "X-API-Key": "",
           },
         }
       );
@@ -77,8 +68,171 @@ export const core_services = {
     }
   },
 
-  getBets: async () => {
-    const res = await fetchWithAuth(`${API_BASE_URL}/api/bets`);
-    return res.json();
+  getUserData: async ({ id }: { id: string }) => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found !.");
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/users/${id}`, // ID path me ja raha hai
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
   },
+  getUserDataByEmail: async ({ email }: { email: string }) => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found !.");
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/users/by-email`,
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getDepositList: async () => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found !.");
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/users/transactions/depositList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
+  getWithdrawList: async () => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found !.");
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/users/transactions/withdrawList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
+  depositAmount: async ({ amount }: { amount: number }) => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found.");
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/users/transactions/deposit`,
+        { amount },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
+  withdrawAmount: async ({ ppoints }: { ppoints: number }) => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found.");
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/users/transactions/withdraw`,
+        { ppoints },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
+  getPredictPlusMatches: async () => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found!");
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/games/getPredictPlusMatches`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  }
 };

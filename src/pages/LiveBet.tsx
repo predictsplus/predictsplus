@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import FooterNav from "../components/FooterNav.tsx";
+import FooterNav from "../components/FooterNav";
 
 const LiveBet = () => {
   const [profit, setProfit] = useState(0);

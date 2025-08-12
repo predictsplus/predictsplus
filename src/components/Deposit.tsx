@@ -1,7 +1,10 @@
 import { Button, Input } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useNotification } from "../contexts/NotificationContext.tsx";
+import { useNotification } from "../contexts/NotificationContext";
+import { core_services } from "../utils/api";
+import { useUser } from "../contexts/UserContext";
+import Loader from './Loader'
 
 const backdropVariants = {
   visible: { opacity: 1 },
@@ -13,17 +16,36 @@ const modalVariants = {
   visible: { y: 0 },
 };
 
-const Deposit = ({ onClose }: { onClose: () => void }) => {
+const Deposit = ({ onClose, onDepositSuccess }: { onClose: () => void, onDepositSuccess: () => void }) => {
   const [amount, setAmount] = useState(1000);
-const { showNotification } = useNotification();
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const { refreshUserFromCurrentToken, user } = useUser();
+  const handleInputChange = (e: any) => {
     const value = Number(e.target.value);
     setAmount(value >= 0 ? value : 0);
   };
 
-  const handleDeposit = () => {
-    showNotification("Success", `Deposited ₹${amount} successfully!`, "success")
-    onClose();
+  const handleDeposit = async () => {
+    if (amount <= 0) {
+      showNotification("Error", "Amount must be greater than 0", "error");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await core_services.depositAmount({ amount });
+      await refreshUserFromCurrentToken()
+      if (onDepositSuccess) {
+        onDepositSuccess();
+      }
+      showNotification("Success", `₹${amount} deposited successfully!`, "success");
+      onClose();
+    } catch (error: any) {
+      showNotification("Error", error.message || "Deposit failed", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,13 +71,19 @@ const { showNotification } = useNotification();
           value={amount}
           onChange={handleInputChange}
           type="number"
-          className="bg-white/10 text-white border-none mb-4"
+          disabled={loading}
+          className="bg-white/10 text-white border-none mb-2 focus:!bg-white/10 hover:!bg-white/10"
         />
+        {user?.conversion_ratio && (
+          <p className="text-sm text-gray-400 mb-4">
+            You will get <span className="font-semibold text-points">{(amount * user.conversion_ratio).toFixed(2)}</span> points
+          </p>
+        )}
         <Button
-          className="w-full bg-pBlue text-white py-2 rounded-xl border-none"
+          className={`w-full ${loading ? 'bg-bg1' : 'bg-pBlue'} text-white py-2 rounded-xl border-none flex items-center justify-center`}
           onClick={handleDeposit}
         >
-          Deposit ₹{amount}
+          {loading ? <Loader /> : <>Deposit ₹{amount}</>}
         </Button>
       </motion.div>
     </motion.div>
