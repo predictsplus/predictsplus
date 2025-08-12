@@ -28,7 +28,7 @@ const AdminPanel: React.FC = () => {
     { id: "transactions", label: "Transactions" },
     { id: "bids", label: "Bids" },
   ];
-
+ 
   
 
 
