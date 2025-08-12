@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { core_services } from "../utils/api.ts";
+// import { core_services } from "../utils/api.ts";
 
-const res1 = await core_services.getBets();
+// const res1 = await core_services.getBets();
 
-console.log(res1);
+// console.log(res1);
 
 
 
@@ -35,9 +35,9 @@ const AdminPanel: React.FC = () => {
 
   useEffect(async () =>{
     
-    const res = await core_services.getBets();
+    // const res = await core_services.getBets();
 
-    console.log(res);
+    // console.log(res);
     console.log("asdasdasd");
       
         // If API sends { data: [...] }, extract array
