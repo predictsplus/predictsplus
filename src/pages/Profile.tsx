@@ -8,6 +8,7 @@ import { useUser } from "../contexts/UserContext";
 import { core_services } from "../utils/api";
 import Loader from "../components/Loader";
 import logo from "../assets/logo/logo.png"
+import EarnCoinsModal from "../components/EarnCoin";
 
 const Profile = () => {
   const { user } = useUser()
@@ -17,6 +18,8 @@ const Profile = () => {
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [isDepositLoading, setIsDepositLoading] = useState(true);
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(true);
+  const [isEarnModalOpen, setIsEarnModalOpen] = useState(false);
+
 
   useEffect(() => {
     if (user) setIsUserLoading(false);
@@ -115,8 +118,21 @@ const Profile = () => {
             </div>
 
             <div className="mt-6">
-              <p className="text-sm text-gray-400">Current Balance</p>
-              <p className="text-2xl font-semibold text-white flex flex-wrap"><img src={logo} alt="pp" className="h-8 mr-1" /> {user?.ppoints}</p>
+              <p className="text-sm text-gray-400 mb-2">Current Balance</p>
+              <div className="flex flex-wrap gap-3">
+                <p className="text-2xl font-semibold text-white flex flex-wrap"><img src={logo} alt="pp" className="h-8 mr-1" /> {user?.ppoints}</p>
+                <button
+                  className="
+    bg-bg3 text-yellow-300 border border-yellow-500 flex-1 flex items-center justify-center gap-1 max-w-[100px] rounded-full
+    transition duration-200 ease-in-out transform
+    hover:scale-110 hover:z-[100] hover:bg-bg1
+  "
+                  onClick={() => setIsEarnModalOpen(true)}
+                >
+                  Earn Coins
+                </button>
+
+              </div>
             </div>
             <div className="flex justify-between flex-wrap gap-3 mt-6">
               <Button
@@ -198,8 +214,14 @@ const Profile = () => {
 
                 </table>
               </div>
-
             </div>
+            <EarnCoinsModal
+              visible={isEarnModalOpen}
+              onClose={() => setIsEarnModalOpen(false)}
+              onEarnSuccess={() => {
+                fetchDeposits();
+              }}
+            />
           </div>
         </div>
       )}
