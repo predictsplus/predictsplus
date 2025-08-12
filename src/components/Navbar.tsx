@@ -18,7 +18,7 @@ const Navbar = () => {
       setAnimateBounce("bounceOut");
       const timeout1 = setTimeout(() => {
         setAnimateBounce("bounceIn");
-      }, 300); // half animation duration
+      }, 300);
 
       const timeout2 = setTimeout(() => {
         setAnimateBounce(false);
@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <Layout.Header className="flex justify-between items-center bg-bg1 text-white px-2 shadow-gray-800 shadow-sm animate-fade">
       <div className="flex flex-grow text-xl font-bold cursor-pointer gap-2 my-auto">
-        <img alt="logo" src={logo} className="h-8 ml-4 my-auto" />
+        <img alt="logo" src={logo} className="h-8 ml-4 mt-[-4px] " />
         <p
           className={`bg-bg2 border-none text-white text-xs my-auto p-2 rounded-lg flex ${animateBounce === "bounceIn"
               ? "animate-bounceIn"
