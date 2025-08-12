@@ -3,7 +3,7 @@ import Card from "antd/es/card/Card";
 import { useNotification } from "../contexts/NotificationContext";
 import { useState } from "react";
 
-const UpcomingMatchesCard = ({ match }) => {
+const UpcomingEventCard = ({ match }) => {
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
 
@@ -65,4 +65,4 @@ const UpcomingMatchesCard = ({ match }) => {
   );
 };
 
-export default UpcomingMatchesCard;
+export default UpcomingEventCard;

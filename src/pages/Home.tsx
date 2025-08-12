@@ -6,10 +6,10 @@ import { AnimatePresence } from "framer-motion";
 import rolling from '../assets/images/rolling.png';
 import coin from '../assets/images/coin.jpeg';
 import { useNavigate } from "react-router-dom";
-import LiveMatchCard from "../components/LiveMatchCard";
-import UpcomingMatchesCard from "../components/UpcomingMatchsCard";
 import { core_services } from "../utils/api";
 import Loader from "../components/Loader";
+import LiveEventCard from "../components/LiveEventCard";
+import UpcomingEventCard from "../components/UpcomingEventCard";
 
 const casinoHighlights = [
   { id: 1, title: "Slot Rolling", image: rolling },
@@ -17,8 +17,8 @@ const casinoHighlights = [
 ];
 
 const Home = () => {
-  const [liveMatches, setLiveMatches] = useState<any[]>([]);
-  const [upcomingMatches, setUpcomingMatches] = useState<any[]>([]);
+  const [liveEvents, setliveEvents] = useState<any[]>([]);
+  const [upcomingEvents, setupcomingEvents] = useState<any[]>([]);
   const [selectedMatch, setSelectedMatch] = useState<any>(null);
   const [showBetPopup, setShowBetPopup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -46,8 +46,8 @@ const Home = () => {
           m.status?.toLowerCase().includes("fixture")
         );
 
-        setLiveMatches(live);
-        setUpcomingMatches(upcoming);
+        setliveEvents(live);
+        setupcomingEvents(upcoming);
       } catch (err) {
         console.error("Failed to fetch matches:", err);
       } finally {
@@ -64,13 +64,13 @@ const Home = () => {
     );
   };
 
-  const displayedLiveMatches = showAllLive
-    ? filterMatches(liveMatches)
-    : filterMatches(liveMatches).slice(0, 8);
+  const displayedliveEvents = showAllLive
+    ? filterMatches(liveEvents)
+    : filterMatches(liveEvents).slice(0, 8);
 
-  const displayedUpcomingMatches = showAllUpcoming
-    ? filterMatches(upcomingMatches)
-    : filterMatches(upcomingMatches).slice(0, 8);
+  const displayedupcomingEvents = showAllUpcoming
+    ? filterMatches(upcomingEvents)
+    : filterMatches(upcomingEvents).slice(0, 8);
 
   return (
     <div className="text-white mx-auto bg-bg1 animate-fade">
@@ -90,11 +90,11 @@ const Home = () => {
         />
       </div>
       <section className="pt-4 m-4">
-        <h2 className="text-xl md:text-2xl font-semibold mb-2">🏏 Live Matches</h2>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Live Event</h2>
         <div className="grid gap-4 md:grid-cols-4 live-card-col">
-          {displayedLiveMatches.length > 0 ? (
-            displayedLiveMatches.map((match) => (
-              <LiveMatchCard
+          {displayedliveEvents.length > 0 ? (
+            displayedliveEvents.map((match) => (
+              <LiveEventCard
                 match={{
                   id: match.id,
                   teamA: match.t1,
@@ -111,10 +111,10 @@ const Home = () => {
               />
             ))
           ) : (
-            <p className="text-gray-400">No live matches available</p>
+            <p className="text-gray-400">No live Events available</p>
           )}
         </div>
-        {filterMatches(liveMatches).length > 10 && (
+        {filterMatches(liveEvents).length > 10 && (
           <button
             onClick={() => setShowAllLive(!showAllLive)}
             className="mt-4 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20"
@@ -124,11 +124,11 @@ const Home = () => {
         )}
       </section>
       <section className="mt-6 m-4">
-        <h2 className="text-xl md:text-2xl font-semibold mb-2">📅 Upcoming Matches</h2>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Upcoming Events</h2>
         <div className="grid gap-4 md:grid-cols-4 upcoming-card-col">
-          {displayedUpcomingMatches.length > 0 ? (
-            displayedUpcomingMatches.map((match) => (
-              <UpcomingMatchesCard
+          {displayedupcomingEvents?.length > 0 ? (
+            displayedupcomingEvents?.map((match) => (
+              <UpcomingEventCard
                 match={{
                   id: match.id,
                   teamA: match.t1,
@@ -142,10 +142,10 @@ const Home = () => {
               />
             ))
           ) : (
-            <p className="text-gray-400">No upcoming matches available</p>
+            <p className="text-gray-400">No upcoming Events available</p>
           )}
         </div>
-        {filterMatches(upcomingMatches).length > 10 && (
+        {filterMatches(upcomingEvents).length > 10 && (
           <button
             onClick={() => setShowAllUpcoming(!showAllUpcoming)}
             className="mt-4 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20"
@@ -156,7 +156,7 @@ const Home = () => {
       </section>
       {selectedMatch && (
         <div className="mt-8 bg-[#111] p-4 rounded-lg">
-          <h3 className="text-lg font-bold mb-2">Match Details</h3>
+          <h3 className="text-lg font-bold mb-2">Event Details</h3>
           <p>{selectedMatch.teamA} vs {selectedMatch.teamB}</p>
           {selectedMatch.score && (
             <p className="text-sm text-gray-400">Live Score: {selectedMatch.score}</p>
@@ -164,7 +164,7 @@ const Home = () => {
         </div>
       )}
       <section className="mt-6 m-4">
-        <h2 className="text-xl md:text-2xl font-semibold mb-2">🎰 Casino Highlights</h2>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Casino Highlights</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {casinoHighlights.map((casino) => (
             <div
