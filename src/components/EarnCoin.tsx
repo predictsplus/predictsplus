@@ -54,17 +54,12 @@ const EarnCoinsModal = ({ visible, onClose, onEarnSuccess }: EarnCoinsModalProps
 
   return (
     <Modal
-      title="Watch an Ad & Earn Coins"
-      open={visible} // Use 'open' instead of 'visible' for antd v4/v5
+      title="Click on this Ad in order to get Coins"
+      open={visible}
       onCancel={handleClose}
-      footer={[
-        <Button key="close" onClick={handleClose}>
-          Close & Earn
-        </Button>,
-      ]}
       centered
     >
-      <div key={adKey}>
+      <div key={adKey} onClick={handleClose}>
         <ins
           className="adsbygoogle"
           style={{ display: "block", width: "100%", height: 250 }}
