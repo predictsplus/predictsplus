@@ -6,9 +6,9 @@ import Withdraw from "../components/Withdraw";
 import Deposit from "../components/Deposit";
 import { useUser } from "../contexts/UserContext";
 import { core_services } from "../utils/api";
-import Loader from "../components/Loader";
 import logo from "../assets/logo/logo.png"
 import EarnCoinsModal from "../components/EarnCoin";
+import HistoryTable from "../components/HistoryTable";
 
 const Profile = () => {
   const { user } = useUser()
@@ -46,7 +46,7 @@ const Profile = () => {
       setIsDepositLoading(false);
     }
   };
-  const fetchWithdrawals = async () => { // ✅ NEW
+  const fetchWithdrawals = async () => { 
     try {
       const res = await core_services.getWithdrawList();
       const formatted = res.map((entry: any) => ({
@@ -156,75 +156,24 @@ const Profile = () => {
 
           {isWithdrawOpen && <Withdraw onClose={() => setIsWithdrawOpen(false)} onWithdrawSuccess={fetchWithdrawals} />}
           {isDepositOpen && <Deposit onClose={() => setIsDepositOpen(false)} onDepositSuccess={fetchDeposits} />}
-
-          <div className="w-full mt-8 text-center">
-            <div className="bg-white/5 backdrop-blur-md p-4 rounded-xl w-full mx-auto">
-              <div className="flex justify-center gap-4 mb-4">
-                <button
-                  onClick={() => setHistoryTab(1)}
-                  className={`px-4 py-1 rounded-full text-sm ${historyTab === 1 ? "bg-pBlue text-white" : "bg-white/10 text-gray-300"
-                    }`}
-                >
-                  Deposit History
-                </button>
-                <button
-                  onClick={() => setHistoryTab(2)}
-                  className={`px-4 py-1 rounded-full text-sm ${historyTab === 2 ? "bg-pBlue text-white" : "bg-white/10 text-gray-300"
-                    }`}
-                >
-                  Withdraw History
-                </button>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left text-sm">
-                  {(historyTab === 1 ? depositHistory : withdrawHistory).length > 0 && (
-                    <thead>
-                      <tr className="text-gray-300 border-b border-white/10">
-                        <th className="py-2 px-4">Amount</th>
-                        <th className="py-2 px-4">Date</th>
-                      </tr>
-                    </thead>
-                  )}
-                  <tbody>
-                    {historyTab === 1 && isDepositLoading && !isUserLoading ? (
-                      <tr>
-                        <td colSpan={2} className="py-6 text-center">
-                          <Loader />
-                        </td>
-                      </tr>
-                    ) : (historyTab === 1 ? depositHistory : withdrawHistory).length > 0 ? (
-                      (historyTab === 1 ? depositHistory : withdrawHistory).map((entry, index) => (
-                        <tr key={index} className="border-b border-white/10">
-                          <td className="py-2 px-4 text-white">
-                            {historyTab === 1 ? "+" : "-"} ₹{entry?.amount.toFixed(2)}{" "}
-                            <span className="text-[#FED348]">({entry?.ppoints?.toFixed(2)} PPoints)</span>
-                          </td>
-                          <td className="py-2 px-4 text-gray-400">{entry?.date}</td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={2} className="py-4 text-center text-gray-400">
-                          No transactions yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-
-                </table>
-              </div>
-            </div>
-            <EarnCoinsModal
-              visible={isEarnModalOpen}
-              onClose={() => setIsEarnModalOpen(false)}
-              onEarnSuccess={() => {
-                fetchDeposits();
-              }}
-            />
-          </div>
+          <HistoryTable
+            historyTab={historyTab}
+            setHistoryTab={setHistoryTab}
+            depositHistory={depositHistory}
+            withdrawHistory={withdrawHistory}
+            isDepositLoading={isDepositLoading}
+            isUserLoading={isUserLoading}
+            isWithdrawLoading={isWithdrawLoading}
+          />
         </div>
       )}
+      <EarnCoinsModal
+        visible={isEarnModalOpen}
+        onClose={() => setIsEarnModalOpen(false)}
+        onEarnSuccess={() => {
+          fetchDeposits();
+        }}
+      />
       <FooterNav />
     </>)
 };

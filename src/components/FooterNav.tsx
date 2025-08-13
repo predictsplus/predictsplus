@@ -21,7 +21,7 @@ const FooterNav = () => {
         className={`flex flex-col items-center justify-center gap-1 text-xl cursor-pointer ${location.pathname === "/live" ? "text-pBlue" : ""}`}
       >
         <FaSuitcase />
-        <p className="text-xs font-medium">My Bets</p>
+        <p className="text-xs font-medium">My Orders</p>
       </span>
 
       <span

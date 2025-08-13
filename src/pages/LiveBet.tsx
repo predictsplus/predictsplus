@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FooterNav from "../components/FooterNav";
 import { core_services } from "../utils/api";
 import { useUser } from "../contexts/UserContext";
+import Loader from "../components/Loader";
 
 const LiveBet = () => {
   const [bets, setBets] = useState<any[]>([]);
@@ -27,7 +28,7 @@ const LiveBet = () => {
   return (
     <div className="text-white text-center mt-10 mx-auto animate-fade">
       <h2 className="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-        My Bets
+        My Orders
       </h2>
 
       <div className="px-4 py-3 @container">
@@ -45,7 +46,7 @@ const LiveBet = () => {
               {loading ? (
                 <tr>
                   <td colSpan={4} className="text-center py-6 text-gray-400">
-                    Loading bets...
+                    <Loader />
                   </td>
                 </tr>
               ) : bets.length > 0 ? (
@@ -59,10 +60,10 @@ const LiveBet = () => {
                     <td className="h-[72px] px-4 py-2 text-sm">
                       <button
                         className={`flex items-center justify-start rounded-full h-8 px-4 text-sm ${bet.status === "Won"
-                            ? "bg-green-500 text-white"
-                            : bet.status === "Lost"
-                              ? "bg-red-500 text-white"
-                              : "bg-[#283139] text-white"
+                          ? "bg-green-500 text-white"
+                          : bet.status === "Lost"
+                            ? "bg-red-500 text-white"
+                            : "bg-[#283139] text-white"
                           }`}
                       >
                         <span className="truncate">{bet.status}</span>
@@ -73,7 +74,7 @@ const LiveBet = () => {
               ) : (
                 <tr>
                   <td colSpan={4} className="text-center py-6 text-gray-400">
-                    No bets found.
+                    No Order found.
                   </td>
                 </tr>
               )}
