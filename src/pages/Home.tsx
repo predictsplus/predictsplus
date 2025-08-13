@@ -10,6 +10,7 @@ import { core_services } from "../utils/api";
 import Loader from "../components/Loader";
 import LiveEventCard from "../components/LiveEventCard";
 import UpcomingEventCard from "../components/UpcomingEventCard";
+import { Helmet } from "react-helmet-async";
 
 const casinoHighlights = [
   { id: 1, title: "Slot Rolling", image: rolling },
@@ -74,6 +75,14 @@ const Home = () => {
 
   return (
     <div className="text-white mx-auto bg-bg1 animate-fade">
+       <Helmet>
+        <title>PredictsPlus - Opinion Trading & Casino</title>
+        <meta name="description" content="Trade on Cricket, Football, tomorrow's market trends, play exciting casino games like dice & coin toss, and win real rewards on PredictsPlus." />
+        <meta property="og:title" content="PredictsPlus - Opinion Trading & Casino" />
+        <meta property="og:description" content="Join PredictsPlus and trade on future events or play casino games to win big." />
+        <meta property="og:url" content="https://www.predictsplus.com/" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/90 z-50">
           <Loader />
