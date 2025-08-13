@@ -234,5 +234,29 @@ export const core_services = {
     } catch (error: any) {
       throw error.response?.data || error.message;
     }
-  }
+  },
+  getAllBetsByUser: async ({ userId }: { userId: string }) => {
+    try {
+      const token = getToken();
+
+      if (!token) {
+        throw new Error("Token not found!");
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/bets/all-by-users`,
+        {
+          params: { userId },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || error.message;
+    }
+  },
 };

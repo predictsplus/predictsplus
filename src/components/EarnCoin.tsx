@@ -3,9 +3,9 @@ import { Modal, Button } from "antd";
 import { core_services } from "../utils/api";
 
 interface EarnCoinsModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onEarnSuccess: () => void;
+  visible: boolean;
+  onClose: () => void;
+  onEarnSuccess: () => void;
 }
 
 const EarnCoinsModal = ({ visible, onClose, onEarnSuccess }: EarnCoinsModalProps) => {
@@ -64,11 +64,10 @@ const EarnCoinsModal = ({ visible, onClose, onEarnSuccess }: EarnCoinsModalProps
       ]}
       centered
     >
-      <div className="text-center">
+      <div key={adKey}>
         <ins
-          key={adKey}
           className="adsbygoogle"
-          style={{ display: "block", width: "100%", height: 250, borderRadius: 8 }}
+          style={{ display: "block", width: "100%", height: 250 }}
           data-ad-client="ca-pub-4752979085213341"
           data-ad-slot="8750224491"
           data-ad-format="auto"
