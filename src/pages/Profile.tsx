@@ -46,7 +46,7 @@ const Profile = () => {
       setIsDepositLoading(false);
     }
   };
-  const fetchWithdrawals = async () => { 
+  const fetchWithdrawals = async () => {
     try {
       const res = await core_services.getWithdrawList();
       const formatted = res.map((entry: any) => ({
@@ -136,8 +136,7 @@ const Profile = () => {
             </div>
             <div className="flex justify-between flex-wrap gap-3 mt-6">
               <Button
-                className="bg-bg3 border-none text-white flex-1 flex items-center justify-center gap-1"
-                onClick={() => setIsDepositOpen(true)}
+                className="bg-bg3 border-none text-white opacity-50 cursor-not-allowed flex-1 flex items-center justify-center gap-1"
               >
                 <ArrowDownOutlined /> Deposit
               </Button>
@@ -149,6 +148,9 @@ const Profile = () => {
               </Button>
             </div>
 
+            <div className="text-center text-xs text-gray-400 mt-2">
+              As per Indian policy, no real money involved as of now
+            </div>
             <div className="text-center text-sm text-blue-400 mt-4 underline cursor-pointer">
               Contact Customer Care
             </div>

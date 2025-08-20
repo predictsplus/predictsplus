@@ -58,16 +58,18 @@ const EarnCoinsModal = ({ visible, onClose, onEarnSuccess }: EarnCoinsModalProps
       open={visible}
       onCancel={handleClose}
       centered
+        footer={null} 
     >
       <div key={adKey} onClick={handleClose}>
-        <ins
+        {/* <ins
           className="adsbygoogle"
           style={{ display: "block", width: "100%", height: 250 }}
           data-ad-client="ca-pub-4752979085213341"
           data-ad-slot="8750224491"
           data-ad-format="auto"
           data-full-width-responsive="true"
-        ></ins>
+        ></ins> */}
+        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/8e35bf74288049.5c2a5ab416079.jpg" alt="dummy ads"/>
       </div>
     </Modal>
   );
